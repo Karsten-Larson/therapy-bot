@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ChatList from '$lib/components/ChatList.svelte';
 	import type { History } from '$lib/history';
 
 	let text: string = '';
@@ -16,7 +17,7 @@
 			method: 'POST',
 			body: JSON.stringify({
 				text,
-				history
+				history: history.slice(1)
 			})
 		});
 
@@ -24,7 +25,7 @@
 			response
 				.json()
 				.then((value) => {
-					history.push({ role: 'model', parts: [{ text: value.message }] });
+					history = [...history, { role: 'model', parts: [{ text: value.message }] }];
 					resolve(value.message);
 				})
 				.catch((error) => reject(error));
@@ -39,6 +40,8 @@
 {:catch error}
 	<p style="color: red">{error.message}</p>
 {/await}
+
+<ChatList {history} />
 
 <form on:submit|preventDefault={handleSubmit}>
 	<input

@@ -1,4 +1,4 @@
-interface Part {
+export interface Part {
 	text: string;
 }
 
