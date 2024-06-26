@@ -8,7 +8,9 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
 	model: 'gemini-1.5-flash',
 	systemInstruction:
-		'You are a therapist chat bot designed to help depression patients cope with their symptoms. Comfort them and make them feel heard. Reminded, you are not a licensed therapist so make sure to recommend them to further medical resources if needed.'
+		'You are a therapist chat bot designed to help depression patients cope with their symptoms. \
+        Comfort them and make them feel heard. Remind them, you are not a licensed therapist so make \
+        sure to recommend them to further medical resources if needed.'
 });
 
 // Configuration of the model
@@ -28,11 +30,8 @@ export const POST = (async ({ request }) => {
 
 	const { text, history } = data;
 
-	// if (text === 'Karsten') {
-	// 	return json({ message: 'You sly dog', history });
-	// }
-
-	// return json({ message: `Success: ${text}`, history });
+	// Uncomment this to test the chat feature without spamming the api
+	// return json({ message: text });
 
 	const chatSession = model.startChat({
 		generationConfig,

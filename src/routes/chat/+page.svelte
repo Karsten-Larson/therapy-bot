@@ -4,60 +4,68 @@
 
 	let text: string = '';
 	let history: History[] = [
-		{ role: 'model', parts: [{ text: "Hello there, I'm glad you're here!" }] }
+		{ role: 'user', parts: [{ text: '**user enter chat**' }] },
+		{ role: 'model', parts: [{ text: "Hello there, I'm glad to see you here!" }] }
 	];
 	let message: Promise<string> = new Promise((resolve, reject) => {
 		resolve('"Input text to begin"');
 	});
 
 	const handleSubmit = async () => {
+		if (text === '' || history[history.length - 1].role === 'user') return;
+
 		history.push({ role: 'user', parts: [{ text }] });
 
 		const response = await fetch('/api/chat', {
 			method: 'POST',
 			body: JSON.stringify({
 				text,
-				history: history.slice(1)
+				history
 			})
 		});
+
+		text = '';
 
 		message = new Promise((resolve, reject) => {
 			response
 				.json()
 				.then((value) => {
-					history = [...history, { role: 'model', parts: [{ text: value.message }] }];
-					resolve(value.message);
+					setTimeout(
+						() => {
+							history = [...history, { role: 'model', parts: [{ text: value.message }] }];
+							resolve(value.message);
+						},
+						Math.random() * 2000 + 1000
+					);
 				})
 				.catch((error) => reject(error));
 		});
 	};
 </script>
 
-{#await message}
-	<p>...waiting</p>
-{:then text}
-	<p>The text is {text}</p>
-{:catch error}
-	<p style="color: red">{error.message}</p>
-{/await}
+<div class="flex h-full">
+	<div class="m-auto h-[90svh] w-full max-w-2xl bg-zinc-800/20 p-8 rounded-lg flex flex-col">
+		{#await message}
+			<ChatList history={history.slice(1)} loading />
+		{:then}
+			<ChatList history={history.slice(1)} />
+		{:catch}
+			<p>Error</p>
+		{/await}
 
-<ChatList {history} />
-
-<form on:submit|preventDefault={handleSubmit}>
-	<input
-		type="text"
-		name="user-input"
-		placeholder="Enter input"
-		class="text-black"
-		bind:value={text}
-	/>
-	<button type="submit" class="btn">Submit</button>
-</form>
-
-<!-- {#await promise}
-	<p>Waiting...</p>
-{:then response}
-	<p>{response.response.text()}</p>
-{:catch error}
-	<p>{error.message}</p>
-{/await} -->
+		<form
+			on:submit|preventDefault={handleSubmit}
+			class="input-group input-group-divider grid-cols-[1fr_auto]"
+		>
+			<input
+				type="text"
+				name="user-input"
+				autocomplete="off"
+				placeholder="Enter input"
+				class="bg-transparent border-0 ring-0"
+				bind:value={text}
+			/>
+			<button type="submit" class="variant-filled-primary">Send</button>
+		</form>
+	</div>
+</div>
