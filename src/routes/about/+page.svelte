@@ -3,6 +3,10 @@
 	import alabamaAMLogo from '$lib/assets/alabama a&m.png';
 </script>
 
+<svelte:head>
+	<title>About | Therapy Bot</title>
+</svelte:head>
+
 <div
 	class="bg-zinc-800/50 p-8 rounded-xl mx-auto w-full max-w-2xl my-4 space-y-4 [&_p]:text-lg [&_p]:indent-8"
 >

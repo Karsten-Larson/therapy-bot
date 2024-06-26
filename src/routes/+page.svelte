@@ -3,6 +3,10 @@
 	import TypeWriter from 'svelte-typewriter';
 </script>
 
+<svelte:head>
+	<title>Therapy Bot</title>
+</svelte:head>
+
 <div
 	class="container w-full max-w-2xl space-y-20 h-full mx-auto flex flex-col justify-center items-center"
 >

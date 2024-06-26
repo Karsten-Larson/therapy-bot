@@ -43,6 +43,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Chat | Therapy Bot</title>
+</svelte:head>
+
 <div class="flex h-full">
 	<div class="m-auto h-[90svh] w-full max-w-2xl bg-zinc-800/20 p-8 rounded-lg flex flex-col">
 		{#await message}
