@@ -31,7 +31,7 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Therapy Bot</strong>
+				<a class="text-xl font-bold" href="/">Therapy Bot</a>
 			</svelte:fragment>
 
 			<div slot="trail" class="flex mr-4 gap-8 text-lg font-bold">
